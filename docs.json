@@ -36,6 +36,7 @@
               "ribbon-public-api/ping",
               {
                 "group": "Interview Flows",
+                "expanded": true,
                 "pages": [
                   "ribbon-public-api/get-interview-flows",
                   "ribbon-public-api/post-interview-flow",
@@ -44,6 +45,7 @@
               },
               {
                 "group": "Interviews",
+                "expanded": true,
                 "pages": [
                   "ribbon-public-api/get-interviews",
                   "ribbon-public-api/post-interview",
