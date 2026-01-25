@@ -1,0 +1,162 @@
+---
+title: "Quick start: conducting recruitment interviews"
+---
+
+# 💼 Conduct your first recruitment interview
+
+This is a quick guide to conducting a recruitment interview using Ribbon API. Recruitment interviews can be viewed within the Ribbon platform, giving you an easy way to manage candidates outside of the API.
+
+Let's create our first Interview - we're going to create a simple job interview for a Produce Stocker at Walmart. We want to ask three questions:
+
+1. Are you eligible to work in the US?
+2. When are you available to start?
+3. Can you tell me about your past experience working within retail?
+
+### Step 1: Create an Interview Flow
+
+First, create an **Interview Flow** with these questions, by making a `POST` request to `/interview-flows` with `interview_type` as `recruitment`.
+
+Here we also optionally set `is_video_enabled` to `true`. This will collect video from the candidate during the interview.
+
+<CodeGroup>
+  ```bash bash
+  curl --request POST \
+       --url https://app.ribbon.ai/be-api/v1/interview-flows \
+       --header 'accept: application/json' \
+       --header 'authorization: Bearer <your-api-key-here>' \
+       --header 'content-type: application/json' \
+       --data @- <<EOF
+  {
+    "org_name": "Walmart",
+    "title": "Produce Stocker",
+    "questions": [
+      "Are you eligible to work in the US?",
+      "When are you available to start?",
+      "Can you tell me about your past experience working within retail?"
+    ],
+    "interview_type": "recruitment",
+    "is_video_enabled": true
+  }
+  EOF
+  ```
+</CodeGroup>
+
+<CodeGroup>
+  ```bash bash
+  {
+  	"interview_flow_id":"c3fe72a9"
+  }
+  ```
+</CodeGroup>
+
+This will return an `interview_flow_id` - you can use this ID to create single-use interview links.
+
+### Step 2: Create an Interview and Interview Link
+
+Next, we create an **Interview** and single-use interview link by making a `POST` request to `/interviews` using our `interview_flow_id`.
+
+Here we optionally provide the email address, first name, and last name. These are used to display the interview and candidate within Ribbon. In order to view candidates on the Ribbon platform you **must** provide at least the email address.
+
+<CodeGroup>
+  ```bash bash
+  curl --request POST \
+       --url https://app.ribbon.ai/be-api/v1/interviews \
+       --header 'accept: application/json' \
+       --header 'authorization: Bearer <your-api-key-here>' \
+       --header 'content-type: application/json' \
+       --data '
+  {
+    "interview_flow_id": "<your-interview-flow-id>",
+  	"interviewee_email_address": "[email protected]",
+  	"interviewee_first_name": "Jane",
+  	"interviewee_last_name": "Doe"
+  }
+  '
+  ```
+</CodeGroup>
+
+<CodeGroup>
+  ```bash bash
+
+  {
+    "interview_id":"a6163b74-f192-4cc0-9f2b-368bc2e20960",
+    "interview_link":"https://app.ribbon.ai/interview/api/c3fe72a9/a6163b74-f192-4cc0-9f2b-368bc2e20960"
+  }
+  ```
+</CodeGroup>
+
+Visiting the `interview_link` above takes us here:
+
+![](/images/docs/cdb01c053338a0ef97cd9b6e3e5ecc51f447033cbdd9896d3edbc2f01cc3ff82-image.png)
+
+Anyone who visits this link can complete your interview with our intelligent voice agent. Since this is a `recruitment` interview, we can also view and manage the interview from the platform:
+
+![](/images/docs/d71389bc3b01aab9c062cd8f64123986894613753c972848dede0fa4d24288d1-image.png)
+
+That's it! Congratulations, you've conducted your first AI-powered interview.
+
+***
+
+# 🔍 Retrieving interviews
+
+You can retrieve a list of completed and incomplete interviews by making a `GET` request to `/interviews`
+
+<CodeGroup>
+  ```bash bash
+  curl --request GET \
+       --url https://app.ribbon.ai/be-api/v1/interviews \
+       --header 'accept: application/json' \
+       --header 'authorization: Bearer <your-api-key-here>'
+  ```
+
+  ```bash bash
+  const url = 'https://app.ribbon.ai/be-api/v1/interviews';
+  const options = {
+    method: 'GET',
+    headers: {accept: 'application/json', authorization: 'Bearer <your-api-key-here>'}
+  };
+
+  fetch(url, options)
+    .then(res => res.json())
+    .then(json => console.log(json))
+    .catch(err => console.error(err));
+  ```
+</CodeGroup>
+
+<CodeGroup>
+  ```bash bash
+  {
+    "interviews": [
+      {
+        "interview_data": {
+          "transcript": "<full transcript of the interview>",
+          "transcript_with_timestamp": [
+            {
+              "content": "Hello! How are you doing today?",
+              "role": "agent",
+              "words": [
+                {
+                  "end": 0.736684326171875,
+                  "start": 0.125105224609375,
+                  "word": "Hello!"
+                }
+                // ... word level timestamps
+              ]
+            }
+          ],
+          "interview_flow_id": "490c8ddf",
+          "interview_id": "dabdf2a3-a680-41cf-a7e0-f2175e77c971",
+          "status": "completed"
+        }
+      }
+      /// ... more interviews
+    ]
+  }
+  ```
+</CodeGroup>
+
+***
+
+[Quick start: conducting general interviews](/docs/quick-start)
+
+[Supported Languages](/docs/supported-languages)

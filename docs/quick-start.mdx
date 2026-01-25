@@ -1,0 +1,149 @@
+---
+title: "Quick start: conducting general interviews"
+---
+
+# 🎤 Conducting an interview
+
+This is a quick guide to conducting a general interview using Ribbon API.
+
+Let's create our first Interview - we're going to create a simple survey for McDonald's. We want to ask three questions:
+
+1. When and where was the last time you visited McDonald's?
+2. What's your favorite item on the McDonald's menu?
+3. If you could introduce one new item to the menu, what would you introduce?
+
+### Step 1: Create an Interview Flow
+
+First, create an **Interview Flow** with these questions, by making a `POST` request to `/interview-flows`
+
+<CodeGroup>
+  ```bash bash
+  curl --request POST \
+       --url https://app.ribbon.ai/be-api/v1/interview-flows \
+       --header 'accept: application/json' \
+       --header 'authorization: Bearer <your-api-key-here>' \
+       --header 'content-type: application/json' \
+       --data @- <<EOF
+  {
+    "org_name": "McDonald's",
+    "title": "Survey",
+    "questions": [
+      "When and where was the last time you visited McDonald's?",
+      "What's your favorite item on the McDonald's menu?",
+      "If you could introduce one new item to the menu, what would you introduce?"
+    ]
+  }
+  EOF
+  ```
+</CodeGroup>
+
+<CodeGroup>
+  ```bash bash
+  {
+  	"interview_flow_id":"12f4493d"
+  }
+  ```
+</CodeGroup>
+
+This will return an `interview_flow_id` - you can use this ID to create single-use interview links.
+
+### Step 2: Create an Interview and Interview Link
+
+Next, we create an **Interview** and single-use interview link by making a `POST` request to `/interviews` using our `interview_flow_id`
+
+<CodeGroup>
+  ```bash bash
+  curl --request POST \
+       --url https://app.ribbon.ai/be-api/v1/interviews \
+       --header 'accept: application/json' \
+       --header 'authorization: Bearer <your-api-key-here>' \
+       --header 'content-type: application/json' \
+       --data '
+  {
+    "interview_flow_id": "<your-interview-flow-id>"
+  }
+  '
+  ```
+</CodeGroup>
+
+<CodeGroup>
+  ```bash bash
+
+  {
+    "interview_id":"3346dfe0-0093-4fb8-9249-31d0c86d0210",
+    "interview_link":"https://app.ribbon.ai/interview/api/12f4493d/3346dfe0-0093-4fb8-9249-31d0c86d0210"
+  }
+  ```
+</CodeGroup>
+
+Visiting the `interview_link` above takes us here:
+
+![](/images/docs/6159e20d184bc2e4e6f0d4f49fdb7123c4a2cc8d67af048c9c647d24fbf79816-image.png)
+
+That's it! Anyone who visits this link can complete your interview with our intelligent voice agent. Congratulations, you've created your first AI-powered interview.
+
+***
+
+# 🔍 Retrieving interviews
+
+You can retrieve a list of completed and incomplete interviews by making a `GET` request to `/interviews`
+
+<CodeGroup>
+  ```bash bash
+  curl --request GET \
+       --url https://app.ribbon.ai/be-api/v1/interviews \
+       --header 'accept: application/json' \
+       --header 'authorization: Bearer <your-api-key-here>'
+  ```
+
+  ```bash bash
+  const url = 'https://app.ribbon.ai/be-api/v1/interviews';
+  const options = {
+    method: 'GET',
+    headers: {accept: 'application/json', authorization: 'Bearer <your-api-key-here>'}
+  };
+
+  fetch(url, options)
+    .then(res => res.json())
+    .then(json => console.log(json))
+    .catch(err => console.error(err));
+  ```
+</CodeGroup>
+
+<CodeGroup>
+  ```bash bash
+  {
+    "interviews": [
+      {
+        "interview_data": {
+          "transcript": "<full transcript of the interview>",
+          "transcript_with_timestamp": [
+            {
+              "content": "Hello! How are you doing today?",
+              "role": "agent",
+              "words": [
+                {
+                  "end": 0.736684326171875,
+                  "start": 0.125105224609375,
+                  "word": "Hello!"
+                }
+                // ... word level timestamps
+              ]
+            }
+          ],
+          "interview_flow_id": "490c8ddf",
+          "interview_id": "dabdf2a3-a680-41cf-a7e0-f2175e77c971",
+          "status": "completed"
+        }
+      }
+      /// ... more interviews
+    ]
+  }
+  ```
+</CodeGroup>
+
+***
+
+[Getting Started with Ribbon API](/docs/getting-started)
+
+[Quick start: conducting recruitment interviews](/docs/quick-start-conducting-recruitment-interviews)

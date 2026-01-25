@@ -1,0 +1,60 @@
+---
+title: "Overview"
+description: "A quick start guide to creating your first interview."
+---
+
+# 🧠 What is Ribbon API?
+
+Ribbon API lets you create intelligent AI-powered voice interviews. To interview someone, all you have to do is share a link.
+
+Ribbon's AI interviewer can hold a natural and intelligent conversation with your interviewee. You can use the Ribbon API to create many types of interviews including: product interviews, surveys, recruitment interviews, health questionnaires, and much more. Use your imagination!
+
+***
+
+# 📖 Concepts
+
+Ribbon API has two concepts: **Interview Flows** and **Interviews**
+
+**Interview Flows** are reusable sets of questions and context. They have two types: `general` (default) and `recruitment`.
+
+**Interviews** are created from **Interviews Flows**. Each interview has a one use session link. To interview someone, all you have to do is share the link! Once the interviewee has visited the interview link, the link is expired.
+
+***
+
+# 💬 Interview type: General vs. Recruitment
+
+When creating an interview flow, you can choose between two interview types: `general` and `recruitment`.
+
+## `general` type interviews
+
+All interviews are `general` type by default. This is a more generic type of interview suitable for multiple use cases.
+
+## `recruitment` type interviews
+
+If you are screening a potential job candidate, you should use `recruitment` type interviews. These interviews are also displayed within the Ribbon platform giving you the opportunity to use Ribbon to view, score, and share the candidates more easily.
+
+***
+
+# 🔒 Authentication
+
+Create your first API key on the [Ribbon API console page](https://app.ribbon.ai/recruit/api-keys).
+
+When making an API call, add an Authorization header and set the API key as a Bearer Token:
+
+`Bearer <your-api-key-here>`
+
+You can test your API key by making a call to [/ping](https://docs.ribbon.ai/reference/get_v1-ping)
+
+***
+
+# 🎤 Quick start guide
+
+There are two easy ways to get started depending on the type of interview you want to conduct:
+
+1 ) Conducting a general interview? (suitable for many use cases) 👉 [Quick start: conducting general interviews](doc:quick-start)
+
+2 ) Conducting a recruitment interview? 👉 [Quick start: conducting recruitment interviews](doc:quick-start-conducting-recruitment-interviews)
+
+***
+
+[Quick start: conducting general interviews](/docs/quick-start)

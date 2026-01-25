@@ -1,0 +1,186 @@
+---
+title: "Webhooks"
+---
+
+### Specifying a webhook URL
+
+When creating an interview flow you can specify a `webhook_url`. This can be used to receive updates related to interviews.
+
+<CodeGroup>
+  ```bash bash
+  curl --request POST \
+       --url https://app.ribbon.ai/be-api/v1/interview-flows \
+       --header 'accept: application/json' \
+       --header 'authorization: Bearer <your-api-key-here>' \
+       --header 'content-type: application/json' \
+       --data '
+  {
+    "webhook_url": "https://example.com",
+    "org_name": "Example Org Name",
+    "title": "Example Title",
+    "questions": [
+      "Example Question 1?",
+      "Example Question 2?"
+    ]
+  }
+  '
+  ```
+</CodeGroup>
+
+### Webhook Authentication
+
+You can specify a `webhook_secret_key` to verify that webhook requests are genuinely from Ribbon. When a secret key is configured, Ribbon will include an `X-Ribbon-Signature` header with each webhook request.
+
+#### Verifying the signature
+
+The `X-Ribbon-Signature` header contains an HMAC-SHA256 signature of the request body using your secret key. To verify the webhook is authentic:
+
+1. Get the raw request body (as a string)
+2. Compute the HMAC-SHA256 hash using your secret key and the request body
+3. Compare the computed signature with the `X-Ribbon-Signature` header value
+
+#### Code examples
+
+**Python**
+
+<CodeGroup>
+  ```bash bash
+  import hmac
+  import hashlib
+
+  def verify_webhook_signature(request_body: str, secret_key: str, signature_header: str) -> bool:
+      computed_signature = hmac.new(
+          secret_key.encode(),
+          request_body.encode(),
+          hashlib.sha256
+      ).hexdigest()
+      return hmac.compare_digest(computed_signature, signature_header)
+
+  # Usage in your webhook handler
+  raw_body = request.get_data(as_text=True)  # Flask example
+  signature = request.headers.get("X-Ribbon-Signature")
+  secret_key = "your-webhook-secret-key"
+
+  if not verify_webhook_signature(raw_body, secret_key, signature):
+      return "Invalid signature", 401
+  ```
+</CodeGroup>
+
+**Node.js**
+
+<CodeGroup>
+  ```bash bash
+  const crypto = require('crypto');
+
+  function verifyWebhookSignature(requestBody, secretKey, signatureHeader) {
+    const computedSignature = crypto
+      .createHmac('sha256', secretKey)
+      .update(requestBody)
+      .digest('hex');
+    return crypto.timingSafeEqual(
+      Buffer.from(computedSignature),
+      Buffer.from(signatureHeader)
+    );
+  }
+
+  // Usage in your webhook handler (Express example)
+  app.post('/webhook', express.text({ type: 'application/json' }), (req, res) => {
+    const signature = req.headers['x-ribbon-signature'];
+    const secretKey = 'your-webhook-secret-key';
+    
+    if (!verifyWebhookSignature(req.body, secretKey, signature)) {
+      return res.status(401).send('Invalid signature');
+    }
+    
+    const payload = JSON.parse(req.body);
+    // Process the webhook...
+  });
+  ```
+</CodeGroup>
+
+#### Security best practices
+
+* **Always verify signatures** in production to ensure webhooks are from Ribbon
+* **Use a strong, random secret key** (at least 32 characters recommended)
+* **Use constant-time comparison** functions (like `hmac.compare_digest` in Python or `crypto.timingSafeEqual` in Node.js) to prevent timing attacks
+* **Keep your secret key secure** and never expose it in client-side code
+
+### Webhook payload
+
+The webhook payload returns the `interview_flow_id`, `interview_id`, `interview_link` and `status`.
+
+⚠️ `interviewee_email_address`, `interviewee_first_name` and `interviewee_last_name` will be null unless the candidate information were provided when creating the interview session (`POST interviews`) or if the candidate went through the full platform flow where candidate information is requested.
+
+We currently support three webhook event types: `interview_processed`, `video_processed`, and `candidate_status_updated`
+
+### Webhook event types
+
+`interview_processed` This event occurs after an interview has been completed and the interview has been successfully processed and analyzed by Ribbon. If video was collected during the interview the **video will not be available yet**.
+
+#### Payload example
+
+<CodeGroup>
+  ```bash bash
+  {
+    "event_type": "interview_processed",  
+    "interview_flow_id": "d1a104e7",
+    "interview_id": "7ada85b2-b8a6-4e4a-84ed-f1c25fa63843",
+    "interview_link": "https://app.ribbon.ai/recruit/interviews/d1a104e7/9ae73ba9-1e8c-4d73-8454-478d7674ea97",
+    "interview_flow_name": "Manager position role interview",
+    "interviewee_email_address": "[email protected]",
+    "interviewee_first_name": "John",
+    "interviewee_last_name": "Doe",
+    "status": "completed",
+  }
+  ```
+</CodeGroup>
+
+`video_processed` This event only occurs if you are collecting video during the interview (`is_video_enabled` is `true`). The event is sent after video processing is complete and when the `video_url` is available.
+
+#### Payload example
+
+<CodeGroup>
+  ```bash bash
+  {
+    "event_type": "video_processed",  
+    "interview_flow_id": "d1a104e7",
+    "interview_id": "7ada85b2-b8a6-4e4a-84ed-f1c25fa63843",
+    "interview_link": "https://app.ribbon.ai/recruit/interviews/d1a104e7/9ae73ba9-1e8c-4d73-8454-478d7674ea97",
+    "interview_flow_name": "Manager position role interview",
+    "interviewee_email_address": "[email protected]",
+    "interviewee_first_name": "John",
+    "interviewee_last_name": "Doe",
+    "status": "completed",
+  }
+  ```
+</CodeGroup>
+
+`candidate_status_updated`
+
+This event occurs anytime a candidate’s status changes within the candidate pipeline (for example: shortlisted → accepted). The event includes both the previous status and the new status so you can track transitions precisely.
+
+#### Payload example
+
+<CodeGroup>
+  ```bash bash
+  {
+    "event_type": "candidate_status_updated",
+    "interview_flow_id": "7b896044",
+    "interview_flow_name": "Backend Engineer",
+    "interviewee_email": "[email protected]",
+    "new_status": "accepted",
+    "previous_status": "shortlisted"
+  }
+  ```
+</CodeGroup>
+
+### Webhook event ordering
+
+You will explicitly always receive the events in this order:
+
+* `interview_processed`
+* `video_processed`
+
+***
+
+[Supported Voices](/docs/supported-voices)
