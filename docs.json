@@ -61,6 +61,35 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Knowledge Base",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "knowledge-base/overview",
+              "knowledge-base/interview-flows"
+            ]
+          },
+          {
+            "group": "Features",
+            "pages": [
+              "knowledge-base/custom-scoring",
+              "knowledge-base/integrity-monitoring",
+              "knowledge-base/ai-voice-personality",
+              "knowledge-base/candidate-management"
+            ]
+          },
+          {
+            "group": "Administration",
+            "pages": [
+              "knowledge-base/team-permissions",
+              "knowledge-base/ats-integrations",
+              "knowledge-base/interview-settings"
+            ]
+          }
+        ]
       }
     ]
   },

@@ -1,0 +1,93 @@
+---
+title: "ATS Integrations"
+description: "Connect Ribbon to your Applicant Tracking System"
+---
+
+Ribbon integrates with popular Applicant Tracking Systems (ATS) to streamline your recruiting workflow.
+
+## Supported Systems
+
+Ribbon uses Kombo to connect with a wide range of ATS platforms. Check the integrations page in your Ribbon settings for the full list of supported systems.
+
+## Setting Up an Integration
+
+### Organization-Level Setup
+
+1. Go to **Settings** > **Integrations**
+2. Select your ATS from the list
+3. Follow the authorization flow to connect your account
+4. Once connected, you'll see a confirmation status
+
+### Per-Interview Configuration
+
+After connecting your ATS, configure each interview flow:
+
+1. Open the interview flow settings
+2. Go to the **Integrations** tab
+3. Select:
+   - **ATS Account** - Which connected account to use
+   - **Job** - Link to an existing job posting
+   - **Stage** - Where to move candidates after interview completion
+
+## How It Works
+
+### Candidate Sync
+
+When a candidate completes a Ribbon interview:
+
+1. Ribbon notifies your ATS
+2. The candidate moves to your specified stage
+3. Interview data syncs to the candidate's profile
+
+### Job Sync
+
+Ribbon can pull your open jobs from your ATS:
+
+1. Click **Sync Jobs** to refresh the list
+2. Select the job to link with your interview flow
+3. Stages for that job become available for selection
+
+## Integration Status
+
+Monitor your integration health:
+
+| Status | Meaning |
+|--------|---------|
+| **Connected** | Integration is active and working |
+| **Syncing** | Currently syncing data |
+| **Error** | Connection issue - check settings |
+
+## Troubleshooting
+
+### Jobs Not Appearing
+- Click **Sync Jobs** to refresh
+- Check that the job is open/active in your ATS
+- Verify your ATS permissions allow Ribbon access
+
+### Candidates Not Syncing
+- Confirm the interview flow is linked to a job
+- Check that a stage is selected
+- Verify the candidate's email matches your ATS records
+
+### Connection Lost
+- Re-authorize the integration in Settings
+- Check your ATS hasn't revoked API access
+- Contact support if issues persist
+
+## Best Practices
+
+1. **Link flows to jobs** - Always connect interview flows to ATS jobs for automatic syncing
+2. **Choose appropriate stages** - Pick a stage that makes sense in your workflow (e.g., "Phone Screen Complete")
+3. **Keep jobs synced** - Refresh your job list when you add new positions
+4. **Monitor sync status** - Check the integration status periodically
+
+## What Data Syncs
+
+Ribbon sends to your ATS:
+- Interview completion status
+- Overall scores (if supported by your ATS)
+- Link to view the full interview in Ribbon
+
+<Note>
+The specific data that syncs depends on your ATS's capabilities. Some systems support more detailed integration than others.
+</Note>
