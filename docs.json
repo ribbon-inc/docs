@@ -1,14 +1,14 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "aspen",
-  "name": "Getting Started with Ribbon API",
+  "theme": "maple",
+  "name": "Ribbon API Documentation",
   "openapi": "api-spec.json",
   "colors": {
-    "primary": "#7a6464",
-    "light": "#7a6464",
-    "dark": "#7a6464"
+    "primary": "#6366F1",
+    "light": "#818CF8",
+    "dark": "#4F46E5"
   },
-  "favicon": "/a3258a60ef622fdcfa6e98f539ec2496823c1e9d69fd5060f71b17abaad6b4c3-small-rib-tatt.png",
+  "favicon": "/logo/light.png",
   "navigation": {
     "tabs": [
       {
@@ -57,5 +57,9 @@
       }
     ]
   },
-  "logo": "/images/97584af-brandmark-white.svg"
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/light.png",
+    "href": "https://ribbon.ai"
+  }
 }
