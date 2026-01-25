@@ -2,6 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "aspen",
   "name": "Getting Started with Ribbon API",
+  "openapi": "api-spec.json",
   "colors": {
     "primary": "#7a6464",
     "light": "#7a6464",
@@ -30,15 +31,16 @@
         "tab": "API Reference",
         "groups": [
           {
-            "group": "Ribbon API",
+            "group": "Ribbon Public API",
             "pages": [
-              "reference/get_v1-ping-1",
-              {
-                "group": "Ribbon Public API",
-                "pages": [
-                  "reference/get_v1-ping-1"
-                ]
-              }
+              "ribbon-public-api/ping",
+              "ribbon-public-api/get-interviews",
+              "ribbon-public-api/post-interview",
+              "ribbon-public-api/get-interview",
+              "ribbon-public-api/revoke-access-to-interview-recordings",
+              "ribbon-public-api/get-interview-flows",
+              "ribbon-public-api/post-interview-flow",
+              "ribbon-public-api/get-interview-flow"
             ]
           }
         ]
