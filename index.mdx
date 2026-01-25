@@ -1,97 +1,61 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Overview"
+description: "A quick start guide to creating your first interview."
 ---
 
-## Setting up
+# What is Ribbon API?
 
-Get your documentation site up and running in minutes.
+Ribbon API lets you create intelligent AI-powered voice interviews. To interview someone, all you have to do is share a link.
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+Ribbon's AI interviewer can hold a natural and intelligent conversation with your interviewee. You can use the Ribbon API to create many types of interviews including: product interviews, surveys, recruitment interviews, health questionnaires, and much more. Use your imagination!
 
-## Make it yours
+---
 
-Design a docs site that looks great and empowers your users.
+# Concepts
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+Ribbon API has two concepts: **Interview Flows** and **Interviews**
+
+**Interview Flows** are reusable sets of questions and context. They have two types: `general` (default) and `recruitment`.
+
+**Interviews** are created from **Interviews Flows**. Each interview has a one use session link. To interview someone, all you have to do is share the link! Once the interviewee has visited the interview link, the link is expired.
+
+---
+
+# Interview type: General vs. Recruitment
+
+When creating an interview flow, you can choose between two interview types: `general` and `recruitment`.
+
+## `general` type interviews
+
+All interviews are `general` type by default. This is a more generic type of interview suitable for multiple use cases.
+
+## `recruitment` type interviews
+
+If you are screening a potential job candidate, you should use `recruitment` type interviews. These interviews are also displayed within the Ribbon platform giving you the opportunity to use Ribbon to view, score, and share the candidates more easily.
+
+---
+
+# Authentication
+
+Create your first API key on the [Ribbon API console page](https://app.ribbon.ai/recruit/api-keys).
+
+When making an API call, add an Authorization header and set the API key as a Bearer Token:
+
+`Bearer <your-api-key-here>`
+
+You can test your API key by making a call to [/ping](/ribbon-public-api/ping)
+
+---
+
+# Quick start guide
+
+There are two easy ways to get started depending on the type of interview you want to conduct:
+
+<CardGroup cols={2}>
+  <Card title="General interviews" icon="microphone" href="/docs/quick-start">
+    Suitable for product interviews, surveys, health questionnaires, and more.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Recruitment interviews" icon="user-tie" href="/docs/quick-start-conducting-recruitment-interviews">
+    For screening potential job candidates.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
-
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
-
-## Need inspiration?
-
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+</CardGroup>

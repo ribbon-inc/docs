@@ -15,11 +15,16 @@
         "tab": "Guides",
         "groups": [
           {
-            "group": "Documentation",
+            "group": "Getting Started",
             "pages": [
-              "docs/getting-started",
+              "index",
               "docs/quick-start",
-              "docs/quick-start-conducting-recruitment-interviews",
+              "docs/quick-start-conducting-recruitment-interviews"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
               "docs/supported-languages",
               "docs/supported-voices",
               "docs/webhooks"
