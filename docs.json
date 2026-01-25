@@ -34,13 +34,23 @@
             "group": "Ribbon Public API",
             "pages": [
               "ribbon-public-api/ping",
-              "ribbon-public-api/get-interviews",
-              "ribbon-public-api/post-interview",
-              "ribbon-public-api/get-interview",
-              "ribbon-public-api/revoke-access-to-interview-recordings",
-              "ribbon-public-api/get-interview-flows",
-              "ribbon-public-api/post-interview-flow",
-              "ribbon-public-api/get-interview-flow"
+              {
+                "group": "Interviews",
+                "pages": [
+                  "ribbon-public-api/get-interviews",
+                  "ribbon-public-api/post-interview",
+                  "ribbon-public-api/get-interview",
+                  "ribbon-public-api/revoke-access-to-interview-recordings"
+                ]
+              },
+              {
+                "group": "Interview Flows",
+                "pages": [
+                  "ribbon-public-api/get-interview-flows",
+                  "ribbon-public-api/post-interview-flow",
+                  "ribbon-public-api/get-interview-flow"
+                ]
+              }
             ]
           }
         ]
