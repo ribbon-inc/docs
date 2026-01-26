@@ -78,7 +78,8 @@
               "knowledge-base/custom-scoring",
               "knowledge-base/integrity-monitoring",
               "knowledge-base/ai-voice-personality",
-              "knowledge-base/candidate-management"
+              "knowledge-base/candidate-management",
+              "knowledge-base/sourcing"
             ]
           },
           {
