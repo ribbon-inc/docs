@@ -27,6 +27,26 @@ mintlify dev
 
 Preview at `http://localhost:3000`
 
+## Updating the OpenAPI Spec
+
+When the API changes, update the documentation:
+
+1. **Download the latest spec** from production:
+
+```bash
+curl -o api-spec.json https://app.ribbon.ai/be-api/doc/api-spec.json
+```
+
+2. **Regenerate the API reference pages** (optional - only if endpoints changed):
+
+```bash
+npx @mintlify/scraping openapi-file api-spec.json
+```
+
+This will output a navigation suggestion. Update `docs.json` if new endpoints were added.
+
+3. **Commit and push** - changes deploy automatically.
+
 ## Deployment
 
 Changes pushed to `main` are automatically deployed via Mintlify.
