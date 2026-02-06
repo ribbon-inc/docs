@@ -43,9 +43,25 @@ curl -o api-spec.json https://app.ribbon.ai/be-api/doc/api-spec.json
 npx @mintlify/scraping openapi-file api-spec.json
 ```
 
-This will output a navigation suggestion. Update `docs.json` if new endpoints were added.
+This creates or updates `.mdx` files in `/ribbon-public-api` from the spec.
 
-3. **Commit and push** - changes deploy automatically.
+3. **Add new endpoints to the sidebar** – Mintlify only shows pages that are listed in `docs.json`. For each new endpoint:
+
+   - Open `docs.json` and go to the **API Reference** tab → **Ribbon Public API** section.
+   - **New endpoint in an existing group** (e.g. another interview endpoint): add the page path to that group’s `pages` array, e.g. `"ribbon-public-api/get-my-endpoint"` (no `.mdx`).
+   - **New group** (e.g. a new resource like “Teams”): add a new object to the `pages` array with `group`, `expanded: true`, and `pages` listing the endpoint paths:
+
+   ```json
+   {
+     "group": "Your Group Name",
+     "expanded": true,
+     "pages": ["ribbon-public-api/your-endpoint-slug"]
+   }
+   ```
+
+   The slug is the filename without `.mdx` (e.g. `get-teams` for `get-teams.mdx`).
+
+4. **Commit and push** – changes deploy automatically.
 
 ## Deployment
 

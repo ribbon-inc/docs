@@ -57,6 +57,13 @@
                   "ribbon-public-api/get-interview",
                   "ribbon-public-api/revoke-access-to-interview-recordings"
                 ]
+              },
+              {
+                "group": "Teams",
+                "expanded": true,
+                "pages": [
+                  "ribbon-public-api/get-teams"
+                ]
               }
             ]
           }
