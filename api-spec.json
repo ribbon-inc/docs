@@ -81,6 +81,65 @@
           "message"
         ]
       },
+      "Team": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the team."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the team."
+          },
+          "created_at": {
+            "type": "string",
+            "description": "The date the team was created."
+          }
+        },
+        "required": [
+          "created_at",
+          "id",
+          "name"
+        ]
+      },
+      "GetTeamsResponse": {
+        "type": "object",
+        "properties": {
+          "teams": {
+            "type": "array",
+            "description": "A list of teams in the organization.",
+            "items": {
+              "$ref": "#/components/schemas/Team"
+            }
+          }
+        },
+        "required": [
+          "teams"
+        ]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message"
+          },
+          "code": {
+            "type": "integer",
+            "description": "The status code"
+          },
+          "status": {
+            "type": "string",
+            "description": "The status"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "status"
+        ]
+      },
       "Word": {
         "type": "object",
         "properties": {
@@ -307,6 +366,10 @@
             "type": "string",
             "description": "The ID of the interview."
           },
+          "team_id": {
+            "type": "string",
+            "description": "The ID of the team this interview belongs to."
+          },
           "status": {
             "description": "The status of the interview.",
             "type": "string",
@@ -329,7 +392,8 @@
           "interview_data",
           "interview_flow_id",
           "interview_id",
-          "status"
+          "status",
+          "team_id"
         ]
       },
       "GetInterviewsResponse": {
@@ -345,28 +409,6 @@
         },
         "required": [
           "interviews"
-        ]
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "description": "The error message"
-          },
-          "code": {
-            "type": "integer",
-            "description": "The status code"
-          },
-          "status": {
-            "type": "string",
-            "description": "The status"
-          }
-        },
-        "required": [
-          "code",
-          "message",
-          "status"
         ]
       },
       "DeleteInterviewResponse": {
@@ -438,7 +480,12 @@
         "type": "object",
         "properties": {
           "interview_flow_id": {
-            "type": "string"
+            "type": "string",
+            "description": "The ID of the interview flow."
+          },
+          "team_id": {
+            "type": "string",
+            "description": "The ID of the team this interview flow belongs to."
           },
           "org_name": {
             "type": "string",
@@ -567,6 +614,7 @@
           "interview_flow_id",
           "org_name",
           "questions",
+          "team_id",
           "title"
         ]
       },
@@ -709,6 +757,12 @@
             "default": null,
             "description": "Concluding text spoken by the AI interviewer at the end of the interview.",
             "nullable": true
+          },
+          "team_id": {
+            "type": "string",
+            "default": null,
+            "description": "The team ID to create the interview flow for. If not provided, defaults to the oldest team in the organization.",
+            "nullable": true
           }
         },
         "required": [
@@ -783,6 +837,35 @@
         "description": "Send a dummy request."
       }
     },
+    "/v1/teams": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTeamsResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "Ribbon Public API"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get teams",
+        "description": "Retrieve all teams in the organization."
+      }
+    },
     "/v1/interviews": {
       "get": {
         "parameters": [
@@ -819,11 +902,32 @@
               ]
             },
             "required": false
+          },
+          {
+            "in": "query",
+            "name": "team_id",
+            "description": "Filter interviews by team ID. If not provided, returns interviews for all teams in the organization.",
+            "schema": {
+              "type": "string",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
           }
         ],
         "responses": {
           "422": {
             "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "403": {
+            "description": "The team_id does not belong to authenticated organization.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "200": {
             "description": "OK",
@@ -848,7 +952,7 @@
           }
         ],
         "summary": "Get interviews",
-        "description": "Retrieve all interview sessions."
+        "description": "Retrieve all interview sessions. If team_id is not provided, returns interviews for all teams in the organization."
       },
       "post": {
         "responses": {
@@ -863,7 +967,7 @@
             }
           },
           "403": {
-            "description": "The interview flow found does not belong to authenticated team or was not created via API.",
+            "description": "The interview flow found does not belong to authenticated organization.",
             "content": {
               "application/json": {
                 "schema": {
@@ -905,7 +1009,7 @@
           }
         ],
         "summary": "Post interview",
-        "description": "Create an interview session."
+        "description": "Create an interview session. The interview will be created in the same team as the interview flow."
       }
     },
     "/v1/interviews/{interview_id}": {
@@ -933,7 +1037,7 @@
             }
           },
           "403": {
-            "description": "The interview found does not belong to authenticated team.",
+            "description": "The interview found does not belong to authenticated organization.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1012,7 +1116,7 @@
             }
           },
           "403": {
-            "description": "The interview found does not belong to authenticated team.",
+            "description": "The interview found does not belong to authenticated organization.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1069,11 +1173,32 @@
               "default": 0
             },
             "required": false
+          },
+          {
+            "in": "query",
+            "name": "team_id",
+            "description": "Filter interview flows by team ID. If not provided, returns interview flows for all teams in the organization.",
+            "schema": {
+              "type": "string",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
           }
         ],
         "responses": {
           "422": {
             "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "403": {
+            "description": "The team_id does not belong to authenticated organization.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "200": {
             "description": "OK",
@@ -1098,12 +1223,22 @@
           }
         ],
         "summary": "Get interview flows",
-        "description": "Retrieve all interview flows."
+        "description": "Retrieve all interview flows. If team_id is not provided, returns interview flows for all teams in the organization."
       },
       "post": {
         "responses": {
           "422": {
-            "description": "Unable to use file provided for company_logo_url, please provide valid url, supported image types are image/jpeg and image/png",
+            "description": "Unable to use file provided for company_logo_url, please provide valid url, supported image types are image/jpeg and image/png. Or no teams found in organization.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The team_id does not belong to authenticated organization.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1145,7 +1280,7 @@
           }
         ],
         "summary": "Post interview flow",
-        "description": "Create an interview flow."
+        "description": "Create an interview flow. If team_id is not provided, defaults to the oldest team in the organization."
       }
     },
     "/v1/interview-flows/{interview_flow_id}": {
@@ -1173,7 +1308,7 @@
             }
           },
           "403": {
-            "description": "The interview flow found does not belong to authenticated team or was not created via API.",
+            "description": "The interview flow found does not belong to authenticated organization.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2300,6 +2435,18 @@
       }
     },
     "/update-candidate-status": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/mixpanel-pageviews": {
       "post": {
         "responses": {
           "default": {
