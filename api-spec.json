@@ -533,6 +533,7 @@
               "vi-VN",
               "th-TH",
               "ar-AE",
+              "no-NO",
               null
             ],
             "description": "The language of the interview flow.",
@@ -682,6 +683,7 @@
               "vi-VN",
               "th-TH",
               "ar-AE",
+              "no-NO",
               null
             ],
             "description": "The language of the interview flow.",
@@ -1390,90 +1392,6 @@
         ]
       }
     },
-    "/setup-org": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/create-unregistered-org": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/sign-up-and-join-org": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/accept-org-invite": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/confirm-slack-integration": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/get-slack-channels": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/revoke-slack-integration": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
     "/submit-feedback": {
       "post": {
         "responses": {
@@ -1486,223 +1404,19 @@
         ]
       }
     },
+    "/send-test-global-webhook": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
     "/confirm-verification": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/toggle-autojoin": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/generate-media-upload-details": {
-      "get": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/create-video-profile": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/upsert-timeline-module": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/delete-user": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/view-job": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/save-job": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/apply-job": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/follow-user": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/unfollow-user": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/like-post": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/unlike-post": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/comment-post": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/view-profile": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/view-post": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/create-post": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/setup-stripe-account": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/setup-stripe-id-verification": {
       "post": {
         "responses": {
           "default": {
@@ -1727,18 +1441,6 @@
       }
     },
     "/get-stripe-subscription-portal": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/redeem": {
       "post": {
         "responses": {
           "default": {
@@ -1786,30 +1488,6 @@
         ]
       }
     },
-    "/share-resume-plus": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/replace-practice-round": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
     "/update-user-chat-context": {
       "post": {
         "responses": {
@@ -1835,30 +1513,6 @@
       }
     },
     "/on-onboarding-update": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/on-candidate-published-interview-call-update": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/auto-fill-profile": {
       "post": {
         "responses": {
           "default": {
@@ -1918,42 +1572,6 @@
         ]
       }
     },
-    "/get-interview-call-id": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/get-demo-interview-call-id": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/retell-webhook": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
     "/kombo-webhook": {
       "post": {
         "responses": {
@@ -1967,6 +1585,18 @@
       }
     },
     "/update-interview-flow": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/update-interview-flow-team": {
       "post": {
         "responses": {
           "default": {
@@ -2028,30 +1658,6 @@
     },
     "/get-ats-integrations-list": {
       "get": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/get-interview-phone-number": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/invite-friends-to-ribbon": {
-      "post": {
         "responses": {
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
@@ -2158,18 +1764,6 @@
         ]
       }
     },
-    "/request-access-to-talent-hub-candidate-interview": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
     "/extract-interview-flow-from-free-text": {
       "post": {
         "responses": {
@@ -2219,66 +1813,6 @@
       }
     },
     "/send-candidate-outreach-from-emails": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/create-calendar-from-oauth": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/recall-webhook": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/get-calendar-events": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/add-bot-to-calendar-event": {
-      "post": {
-        "responses": {
-          "default": {
-            "$ref": "#/components/responses/DEFAULT_ERROR"
-          }
-        },
-        "tags": [
-          "private_routes"
-        ]
-      }
-    },
-    "/remove-bots-from-calendar-event": {
       "post": {
         "responses": {
           "default": {
@@ -2386,6 +1920,18 @@
         ]
       }
     },
+    "/get-sound-test-connection-details": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
     "/livekit-webhook": {
       "post": {
         "responses": {
@@ -2435,6 +1981,18 @@
       }
     },
     "/update-candidate-status": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/update-assigned-recruiter": {
       "post": {
         "responses": {
           "default": {
