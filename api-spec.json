@@ -508,11 +508,14 @@
               "11labs-Anna",
               "openai-Onyx",
               "openai-Shimmer",
+              "Kore",
               "11labs-Anthony",
               "11labs-Kate",
               "11labs-Amy",
               "IPgYtHTNLjC7Bq7IPHrm",
               "UOIqAnmS11Reiei1Ytkc",
+              "vUmLiNBm6MDcy1NUHaVr",
+              "bhJUNIXWQQ94l8eI2VUf",
               null
             ],
             "description": "The voice ID to be used for the interview agent.",
@@ -647,7 +650,7 @@
           },
           "questions": {
             "type": "array",
-            "description": "A list of questions to include in the interview.",
+            "description": "A list of questions to include in the interview. Maximum 20 questions.",
             "items": {
               "type": "string"
             }
@@ -658,11 +661,14 @@
               "11labs-Anna",
               "openai-Onyx",
               "openai-Shimmer",
+              "Kore",
               "11labs-Anthony",
               "11labs-Kate",
               "11labs-Amy",
               "IPgYtHTNLjC7Bq7IPHrm",
               "UOIqAnmS11Reiei1Ytkc",
+              "vUmLiNBm6MDcy1NUHaVr",
+              "bhJUNIXWQQ94l8eI2VUf",
               null
             ],
             "description": "The voice ID to be used for the interview agent.",
@@ -1230,7 +1236,7 @@
       "post": {
         "responses": {
           "422": {
-            "description": "Unable to use file provided for company_logo_url, please provide valid url, supported image types are image/jpeg and image/png. Or no teams found in organization.",
+            "description": "Unable to use file provided for company_logo_url, please provide valid url, supported image types are image/jpeg and image/png. Or no teams found in organization. Or more than 20 questions provided.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1608,6 +1614,30 @@
         ]
       }
     },
+    "/save-question": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/delete-question": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
     "/get-ats-integration-jobs-and-stages-list": {
       "post": {
         "responses": {
@@ -1921,6 +1951,18 @@
       }
     },
     "/get-sound-test-connection-details": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/get-demo-sound-test-connection-details": {
       "post": {
         "responses": {
           "default": {
