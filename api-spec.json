@@ -771,6 +771,12 @@
             "default": null,
             "description": "The team ID to create the interview flow for. If not provided, defaults to the oldest team in the organization.",
             "nullable": true
+          },
+          "preamble_video_url": {
+            "type": "string",
+            "default": null,
+            "description": "URL of an intro video to show candidates before the interview starts. The video will be downloaded and stored by Ribbon. Supported formats: MP4 (video/mp4), QuickTime (video/quicktime), WebM (video/webm). Maximum file size: 100 MB. The URL must be publicly accessible and served by a reasonably fast host \u2014 slow or unreliable servers may cause the request to time out. When provided, the intro video is automatically enabled for the interview flow.",
+            "nullable": true
           }
         },
         "required": [
@@ -1236,7 +1242,7 @@
       "post": {
         "responses": {
           "422": {
-            "description": "Unable to use file provided for company_logo_url, please provide valid url, supported image types are image/jpeg and image/png. Or no teams found in organization. Or more than 20 questions provided.",
+            "description": "Unable to use file provided for company_logo_url or preamble_video_url. Or no teams found in organization. Or more than 20 questions provided.",
             "content": {
               "application/json": {
                 "schema": {
