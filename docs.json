@@ -27,7 +27,8 @@
             "pages": [
               "docs/supported-languages",
               "docs/supported-voices",
-              "docs/webhooks"
+              "docs/webhooks",
+              "docs/mcp"
             ]
           }
         ]
