@@ -447,6 +447,13 @@
             "default": null,
             "description": "The interviewee last name.",
             "nullable": true
+          },
+          "assigned_recruiter_id": {
+            "type": "string",
+            "default": null,
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+            "description": "The ID of the recruiter to assign this interview to. Must belong to the same team as the interview flow. If provided, the returned interview_link will include assignedRecruiterId as a query parameter. Use GET /recruiters to retrieve valid recruiter IDs.",
+            "nullable": true
           }
         },
         "required": [
@@ -512,10 +519,16 @@
               "11labs-Anthony",
               "11labs-Kate",
               "11labs-Amy",
+              "11labs-Rahul",
               "IPgYtHTNLjC7Bq7IPHrm",
               "UOIqAnmS11Reiei1Ytkc",
               "vUmLiNBm6MDcy1NUHaVr",
               "bhJUNIXWQQ94l8eI2VUf",
+              "b3jcIbyC3BSnaRu8avEk",
+              "xF681s0UeE04gsf0mVsJ",
+              "uNsWM1StCcpydKYOjKyu",
+              "BGEU6wFi2uNm6Kje1Yhk",
+              "4kCDY3HJwvO7Zp3con83",
               null
             ],
             "description": "The voice ID to be used for the interview agent.",
@@ -637,6 +650,45 @@
           "interview_flows"
         ]
       },
+      "Recruiter": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the recruiter."
+          },
+          "email": {
+            "type": "string",
+            "default": null,
+            "description": "The primary email address of the recruiter.",
+            "nullable": true
+          },
+          "full_name": {
+            "type": "string",
+            "default": null,
+            "description": "The full name of the recruiter (may be null).",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "GetRecruitersResponse": {
+        "type": "object",
+        "properties": {
+          "recruiters": {
+            "type": "array",
+            "description": "A list of recruiters.",
+            "items": {
+              "$ref": "#/components/schemas/Recruiter"
+            }
+          }
+        },
+        "required": [
+          "recruiters"
+        ]
+      },
       "PostInterviewFlowsRequest": {
         "type": "object",
         "properties": {
@@ -665,10 +717,16 @@
               "11labs-Anthony",
               "11labs-Kate",
               "11labs-Amy",
+              "11labs-Rahul",
               "IPgYtHTNLjC7Bq7IPHrm",
               "UOIqAnmS11Reiei1Ytkc",
               "vUmLiNBm6MDcy1NUHaVr",
               "bhJUNIXWQQ94l8eI2VUf",
+              "b3jcIbyC3BSnaRu8avEk",
+              "xF681s0UeE04gsf0mVsJ",
+              "uNsWM1StCcpydKYOjKyu",
+              "BGEU6wFi2uNm6Kje1Yhk",
+              "4kCDY3HJwvO7Zp3con83",
               null
             ],
             "description": "The voice ID to be used for the interview agent.",
@@ -1368,6 +1426,61 @@
         }
       ]
     },
+    "/v1/recruiters": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "team_id",
+            "description": "Filter recruiters by team ID. If not provided, returns recruiters for all teams in the organization.",
+            "schema": {
+              "type": "string",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "403": {
+            "description": "The team_id does not belong to authenticated organization.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetRecruitersResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "Ribbon Public API"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get recruiters",
+        "description": "Retrieve all recruiters in the organization. Use the returned id as assigned_recruiter_id when creating an interview. If team_id is not provided, returns recruiters for all teams in the organization."
+      }
+    },
     "/ping": {
       "get": {
         "responses": {
@@ -2053,6 +2166,112 @@
       }
     },
     "/mixpanel-pageviews": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/.well-known/oauth-authorization-server": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/.well-known/oauth-protected-resource": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/oauth/register": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/oauth/authorize": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/oauth/consent": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/oauth/token": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/oauth/revoke": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/mcp/ats": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      },
       "post": {
         "responses": {
           "default": {
