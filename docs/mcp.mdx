@@ -1,0 +1,68 @@
+---
+title: "Ribbon MCP"
+description: "Ask Claude (or any MCP client) about your ATS pipeline in plain English."
+---
+
+Ribbon MCP connects your ATS to AI assistants like Claude through the [Model Context Protocol](https://modelcontextprotocol.io). Once connected, you can ask Claude things like "who applied to the Senior Engineer role this week?" and it will answer using live data from your ATS.
+
+Read-only for now — Claude can look things up, but can't change anything in your ATS.
+
+## What you can ask
+
+Some example prompts that work out of the box:
+
+- *"Who applied to the Senior Engineer role this week?"*
+- *"Show me candidates in final-round interviews."*
+- *"Which open roles still haven't had a first-round interview?"*
+- *"What interviews are scheduled for tomorrow?"*
+- *"Find the candidate whose email is jane@example.com."*
+
+## Get set up
+
+<Steps>
+  <Step title="Create a Ribbon account">
+    Sign up at [app.ribbon.ai](https://app.ribbon.ai). You'll need to be an admin on your org to connect an ATS or enable MCP.
+  </Step>
+  <Step title="Connect your ATS">
+    Go to **Settings → Integrations**, pick your ATS (Ashby, Greenhouse, Lever, Workable, and many more via Kombo), and complete the authorization flow. Wait for the first sync to finish — Ribbon MCP can't read from an integration that's still setting up.
+
+    See [ATS Integrations](/knowledge-base/ats-integrations) for more detail.
+  </Step>
+  <Step title="Connect Ribbon to Claude">
+    In the left nav, click **Ribbon MCP**, then **Connect in Claude**. Claude will open in a new tab with Ribbon pre-filled as a custom connector. Approve access when prompted.
+
+    That's it — Claude can now answer questions about your pipeline.
+  </Step>
+</Steps>
+
+## What Claude can see
+
+Ribbon MCP exposes six read-only tools:
+
+| Tool | What it does |
+| --- | --- |
+| `list_jobs` | Open roles and their interview stages |
+| `list_applications` | The full pipeline — each application includes the candidate, job, interviews, and offers |
+| `list_candidates` | Candidates in your ATS; look up by name or email |
+| `list_interviews` | Upcoming and recent interviews |
+| `list_offers` | Outstanding and accepted offers |
+| `list_ats_users` | Recruiters, hiring managers, and interviewers in your ATS |
+
+Claude picks the right tool automatically based on what you ask.
+
+## Use with ChatGPT, Cursor, or other clients
+
+The same server works with any MCP client. Instead of clicking "Connect in Claude", copy the server URL from the Ribbon MCP page into your client's MCP or Connectors settings:
+
+```
+https://app.ribbon.ai/be-api/mcp/ats
+```
+
+Your client will walk you through the same OAuth approval flow.
+
+## Security and privacy
+
+- **Read-only.** No tool call can modify your ATS.
+- **Scoped to your org.** Claude only sees data for the Ribbon org you signed in to approve access.
+- **Revocable.** Disconnect the connector in Claude's settings at any time; the access token stops working immediately.
+- **OAuth 2.1 with PKCE.** Your credentials never leave Ribbon; Claude gets a short-lived access token, not your password.
