@@ -452,7 +452,7 @@
             "type": "string",
             "default": null,
             "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
-            "description": "The ID of the recruiter to assign this interview to. Must belong to the same team as the interview flow. If provided, the returned interview_link will include assignedRecruiterId as a query parameter. Use GET /recruiters to retrieve valid recruiter IDs.",
+            "description": "The ID of the team member to assign this interview to. Must belong to the same team as the interview flow. If provided, the returned interview_link will include assignedRecruiterId as a query parameter. Use GET /team-members to retrieve valid team member IDs.",
             "nullable": true
           }
         },
@@ -650,23 +650,45 @@
           "interview_flows"
         ]
       },
-      "Recruiter": {
+      "DeleteInterviewFlowResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicates successful deletion of the interview flow."
+          },
+          "interview_flow_id": {
+            "type": "string",
+            "description": "The ID of the interview flow that was archived."
+          },
+          "status": {
+            "type": "string",
+            "description": "The new status of the interview flow after deletion."
+          }
+        },
+        "required": [
+          "interview_flow_id",
+          "status",
+          "success"
+        ]
+      },
+      "TeamMember": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "description": "The ID of the recruiter."
+            "description": "The ID of the team member."
           },
           "email": {
             "type": "string",
             "default": null,
-            "description": "The primary email address of the recruiter.",
+            "description": "The primary email address of the team member.",
             "nullable": true
           },
           "full_name": {
             "type": "string",
             "default": null,
-            "description": "The full name of the recruiter (may be null).",
+            "description": "The full name of the team member (may be null).",
             "nullable": true
           }
         },
@@ -674,19 +696,19 @@
           "id"
         ]
       },
-      "GetRecruitersResponse": {
+      "GetTeamMembersResponse": {
         "type": "object",
         "properties": {
-          "recruiters": {
+          "team_members": {
             "type": "array",
-            "description": "A list of recruiters.",
+            "description": "A list of team members.",
             "items": {
-              "$ref": "#/components/schemas/Recruiter"
+              "$ref": "#/components/schemas/TeamMember"
             }
           }
         },
         "required": [
-          "recruiters"
+          "team_members"
         ]
       },
       "PostInterviewFlowsRequest": {
@@ -1424,15 +1446,73 @@
             "minLength": 1
           }
         }
-      ]
+      ],
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "interview_flow_id",
+            "description": "The ID of the interview flow to delete.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "422": {
+            "description": "No interview flow found with provided interview_flow_id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The interview flow found does not belong to authenticated organization.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteInterviewFlowResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "Ribbon Public API"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Delete interview flow",
+        "description": "Delete an interview flow."
+      }
     },
-    "/v1/recruiters": {
+    "/v1/team-members": {
       "get": {
         "parameters": [
           {
             "in": "query",
             "name": "team_id",
-            "description": "Filter recruiters by team ID. If not provided, returns recruiters for all teams in the organization.",
+            "description": "Filter team members by team ID. If not provided, returns team members for all teams in the organization.",
             "schema": {
               "type": "string",
               "default": null,
@@ -1460,7 +1540,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetRecruitersResponse"
+                  "$ref": "#/components/schemas/GetTeamMembersResponse"
                 }
               }
             }
@@ -1477,8 +1557,8 @@
             "BearerAuth": []
           }
         ],
-        "summary": "Get recruiters",
-        "description": "Retrieve all recruiters in the organization. Use the returned id as assigned_recruiter_id when creating an interview. If team_id is not provided, returns recruiters for all teams in the organization."
+        "summary": "Get team members",
+        "description": "Retrieve all team members in the organization. Use the returned id as assigned_recruiter_id when creating an interview. If team_id is not provided, returns members for all teams in the organization."
       }
     },
     "/ping": {
