@@ -29,72 +29,79 @@ When creating an interview flow you can specify a `webhook_url`. This can be use
 
 ### Webhook Authentication
 
-You can specify a `webhook_secret_key` to verify that webhook requests are genuinely from Ribbon. When a secret key is configured, Ribbon will include an `X-Ribbon-Signature` header with each webhook request.
+You can specify a `webhook_secret_key` to verify that webhook requests are genuinely from Ribbon. When a secret key is configured, Ribbon will include an `X-Ribbon-Signature` header (also accepted as `x-ribbon-signature`) with each webhook request.
+
+The signature is an **HMAC-SHA256** hash of the **raw JSON request body**, using your webhook secret key, encoded as a **64-character hex string**. Ribbon never sends the secret key in the webhook request — you configure it in your interview settings and use the same value on your server to verify signatures.
+
+#### Example
+
+Given this webhook secret key configured in your interview settings:
+
+```
+myGoodSecret
+```
+
+And this raw request body:
+
+<CodeGroup>
+  ```json json
+  {"interview_flow_id": "f6298c77", "interview_id": "e48f2a8f-e235-4e4c-b5f9-b2114d684bdc", "status": "completed", "interview_flow_name": "Team 1 interview", "event_type": "interview_processed", "interviewee_email_address": "anne@ribbon.ai", "interviewee_first_name": "Anne", "interviewee_last_name": "Anquetin0", "interview_link": "https://staging.ribbon.ai/recruit/interviews/f6298c77/a5bc36d2-c22c-4bae-9d08-0b941738924e"}
+  ```
+</CodeGroup>
+
+Ribbon sends a request with headers like:
+
+```
+Content-Type: application/json
+User-Agent: Ribbon-API-Webhook/1.0
+x-ribbon-signature: bdae121de5d94dffe936ec3337b0395a4237a6d2433bbd0bc2941883e5667d18
+```
+
+To verify, compute HMAC-SHA256 of the exact raw body string using `myGoodSecret` and compare the result to the header value. The signature must match byte-for-byte — use the raw request body as received, not a re-serialized or pretty-printed version of the JSON.
 
 #### Verifying the signature
 
-The `X-Ribbon-Signature` header contains an HMAC-SHA256 signature of the request body using your secret key. To verify the webhook is authentic:
-
-1. Get the raw request body (as a string)
-2. Compute the HMAC-SHA256 hash using your secret key and the request body
-3. Compare the computed signature with the `X-Ribbon-Signature` header value
+1. Read the raw request body as a string (before parsing JSON)
+2. Compute HMAC-SHA256 using your webhook secret key and the raw body
+3. Hex-encode the result and compare it to the `X-Ribbon-Signature` header value using a constant-time comparison
 
 #### Code examples
 
 **Python**
 
 <CodeGroup>
-  ```bash bash
+  ```python python
   import hmac
   import hashlib
 
-  def verify_webhook_signature(request_body: str, secret_key: str, signature_header: str) -> bool:
-      computed_signature = hmac.new(
-          secret_key.encode(),
-          request_body.encode(),
-          hashlib.sha256
-      ).hexdigest()
-      return hmac.compare_digest(computed_signature, signature_header)
+  def verify_webhook_signature(body: str, secret: str, signature: str) -> bool:
+      expected = hmac.new(secret.encode(), body.encode(), hashlib.sha256).hexdigest()
+      return hmac.compare_digest(expected, signature)
 
-  # Usage in your webhook handler
-  raw_body = request.get_data(as_text=True)  # Flask example
-  signature = request.headers.get("X-Ribbon-Signature")
-  secret_key = "your-webhook-secret-key"
+  body = '{"interview_flow_id": "f6298c77", "interview_id": "e48f2a8f-e235-4e4c-b5f9-b2114d684bdc", "status": "completed", "interview_flow_name": "Team 1 interview", "event_type": "interview_processed", "interviewee_email_address": "anne@ribbon.ai", "interviewee_first_name": "Anne", "interviewee_last_name": "Anquetin0", "interview_link": "https://staging.ribbon.ai/recruit/interviews/f6298c77/a5bc36d2-c22c-4bae-9d08-0b941738924e"}'
+  secret = "myGoodSecret"
+  signature = "bdae121de5d94dffe936ec3337b0395a4237a6d2433bbd0bc2941883e5667d18"
 
-  if not verify_webhook_signature(raw_body, secret_key, signature):
-      return "Invalid signature", 401
+  verify_webhook_signature(body, secret, signature)  # True
   ```
 </CodeGroup>
 
-**Node.js**
+**TypeScript**
 
 <CodeGroup>
-  ```bash bash
-  const crypto = require('crypto');
+  ```typescript typescript
+  import crypto from "crypto";
 
-  function verifyWebhookSignature(requestBody, secretKey, signatureHeader) {
-    const computedSignature = crypto
-      .createHmac('sha256', secretKey)
-      .update(requestBody)
-      .digest('hex');
-    return crypto.timingSafeEqual(
-      Buffer.from(computedSignature),
-      Buffer.from(signatureHeader)
-    );
+  function verifyWebhookSignature(body: string, secret: string, signature: string): boolean {
+    const expected = crypto.createHmac("sha256", secret).update(body).digest("hex");
+    return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
   }
 
-  // Usage in your webhook handler (Express example)
-  app.post('/webhook', express.text({ type: 'application/json' }), (req, res) => {
-    const signature = req.headers['x-ribbon-signature'];
-    const secretKey = 'your-webhook-secret-key';
-    
-    if (!verifyWebhookSignature(req.body, secretKey, signature)) {
-      return res.status(401).send('Invalid signature');
-    }
-    
-    const payload = JSON.parse(req.body);
-    // Process the webhook...
-  });
+  const body = '{"interview_flow_id": "f6298c77", "interview_id": "e48f2a8f-e235-4e4c-b5f9-b2114d684bdc", "status": "completed", "interview_flow_name": "Team 1 interview", "event_type": "interview_processed", "interviewee_email_address": "anne@ribbon.ai", "interviewee_first_name": "Anne", "interviewee_last_name": "Anquetin0", "interview_link": "https://staging.ribbon.ai/recruit/interviews/f6298c77/a5bc36d2-c22c-4bae-9d08-0b941738924e"}';
+  const secret = "myGoodSecret";
+  const signature = "bdae121de5d94dffe936ec3337b0395a4237a6d2433bbd0bc2941883e5667d18";
+
+  verifyWebhookSignature(body, secret, signature); // true
   ```
 </CodeGroup>
 
@@ -102,8 +109,15 @@ The `X-Ribbon-Signature` header contains an HMAC-SHA256 signature of the request
 
 * **Always verify signatures** in production to ensure webhooks are from Ribbon
 * **Use a strong, random secret key** (at least 32 characters recommended)
-* **Use constant-time comparison** functions (like `hmac.compare_digest` in Python or `crypto.timingSafeEqual` in Node.js) to prevent timing attacks
+* **Use constant-time comparison** functions (like `hmac.compare_digest` in Python or `crypto.timingSafeEqual` in TypeScript) to prevent timing attacks
 * **Keep your secret key secure** and never expose it in client-side code
+* **Verify the raw request body** — parsing and re-stringifying JSON will produce a different signature
+
+### Static IP allowlisting
+
+By default, webhook requests may originate from dynamic IP addresses. If your server requires IP allowlisting, contact your Ribbon account team to enable **static IP webhook delivery** for your organization.
+
+When static IP delivery is enabled, all webhook requests to your endpoint will originate from a fixed egress IP address that you can add to your firewall allowlist. Ribbon still recommends verifying the `X-Ribbon-Signature` header on every request — signature verification is the most reliable way to authenticate webhooks.
 
 ### Webhook payload
 
