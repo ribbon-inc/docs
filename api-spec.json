@@ -1025,14 +1025,16 @@
           {
             "in": "query",
             "name": "status",
-            "description": "The status of the interviews to return.",
+            "description": "Filter interviews by status. Omit to return all (completed and incomplete).",
             "schema": {
-              "default": "completed",
+              "default": null,
               "type": "string",
               "enum": [
                 "incomplete",
-                "completed"
-              ]
+                "completed",
+                null
+              ],
+              "nullable": true
             },
             "required": false
           },
@@ -1044,6 +1046,21 @@
               "type": "string",
               "default": null,
               "nullable": true
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "transcript",
+            "description": "How much transcript data to return. 'full' (default) returns the transcript, word-level timestamps, and question mapping. 'text' returns the raw transcript only. 'none' omits all transcript fields.",
+            "schema": {
+              "default": "full",
+              "type": "string",
+              "enum": [
+                "full",
+                "text",
+                "none"
+              ]
             },
             "required": false
           }
@@ -1148,6 +1165,21 @@
     "/v1/interviews/{interview_id}": {
       "get": {
         "parameters": [
+          {
+            "in": "query",
+            "name": "transcript",
+            "description": "How much transcript data to return. 'full' (default) returns the transcript, word-level timestamps, and question mapping. 'text' returns the raw transcript only. 'none' omits all transcript fields.",
+            "schema": {
+              "default": "full",
+              "type": "string",
+              "enum": [
+                "full",
+                "text",
+                "none"
+              ]
+            },
+            "required": false
+          },
           {
             "in": "path",
             "name": "interview_id",
