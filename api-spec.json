@@ -245,52 +245,28 @@
         ],
         "additionalProperties": false
       },
-      "Scores": {
+      "CustomScoreValue": {
         "type": "object",
         "properties": {
-          "communication": {
+          "name": {
+            "type": "string",
+            "description": "Name of the scoring criterion."
+          },
+          "score": {
             "type": "number",
             "default": null,
-            "description": "Communication score from the interview.",
+            "description": "Score for this criterion, normalized to a 0-5 scale. Null when the criterion has not been scored.",
             "nullable": true
           },
-          "motivation": {
-            "type": "number",
-            "default": null,
-            "description": "Motivation score from the interview.",
-            "nullable": true
-          },
-          "skills": {
-            "type": "number",
-            "default": null,
-            "description": "Skills score from the interview.",
-            "nullable": true
-          },
-          "language_vocabulary_and_expression": {
-            "type": "number",
-            "default": null,
-            "description": "Language vocabulary and expression score from the interview.",
-            "nullable": true
-          },
-          "language_grammar_and_structure": {
-            "type": "number",
-            "default": null,
-            "description": "Language grammar and structure score from the interview.",
-            "nullable": true
-          },
-          "language_fluency_and_pace": {
-            "type": "number",
-            "default": null,
-            "description": "Language fluency and pace score from the interview.",
-            "nullable": true
-          },
-          "language_comprehension": {
-            "type": "number",
-            "default": null,
-            "description": "Language comprehension score from the interview.",
-            "nullable": true
+          "scoring_system": {
+            "type": "string",
+            "description": "How the criterion is natively expressed: 'out_of_5', 'percentage', or 'binary'. Multiply the 0-5 score by 20 to recover a percentage; for binary, 5 means yes and 0 means no."
           }
         },
+        "required": [
+          "name",
+          "scoring_system"
+        ],
         "additionalProperties": false
       },
       "InterviewData": {
@@ -314,12 +290,6 @@
               "$ref": "#/components/schemas/QuestionToTranscriptMapping"
             }
           },
-          "audio_url": {
-            "type": "string",
-            "default": null,
-            "description": "Url to the interview audio recording.",
-            "nullable": true
-          },
           "video_url": {
             "type": "string",
             "default": null,
@@ -333,17 +303,13 @@
             "nullable": true
           },
           "scores": {
+            "type": "array",
             "default": null,
-            "description": "Interview scores grouped together.",
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Scores"
-              },
-              {
-                "type": "object",
-                "nullable": true
-              }
-            ]
+            "description": "All scores for the interview: the default criteria (always listed, with a null score when not scored) followed by the flow's custom criteria in their configured order.",
+            "items": {
+              "$ref": "#/components/schemas/CustomScoreValue"
+            },
+            "nullable": true
           },
           "interviewee_email_address": {
             "type": "string",
@@ -394,6 +360,16 @@
               "completed"
             ]
           },
+          "started_at": {
+            "type": "string",
+            "description": "ISO 8601 timestamp of when the interview call started. Null if the candidate has not taken the interview yet.",
+            "nullable": true
+          },
+          "ended_at": {
+            "type": "string",
+            "description": "ISO 8601 timestamp of when the interview call ended. Null if the candidate has not taken the interview yet.",
+            "nullable": true
+          },
           "interview_data": {
             "description": "Data for the completed interview. If the interview is incomplete, this field will be null.",
             "anyOf": [
@@ -408,9 +384,11 @@
           }
         },
         "required": [
+          "ended_at",
           "interview_data",
           "interview_flow_id",
           "interview_id",
+          "started_at",
           "status",
           "team_id"
         ],
@@ -543,7 +521,7 @@
             }
           },
           "voice_id": {
-            "default": "11labs-Kate",
+            "default": "db6b0ed5-d5d3-463d-ae85-518a07d3c2b4",
             "enum": [
               "11labs-Anna",
               "openai-Onyx",
@@ -554,13 +532,47 @@
               "11labs-Rahul",
               "IPgYtHTNLjC7Bq7IPHrm",
               "UOIqAnmS11Reiei1Ytkc",
-              "vUmLiNBm6MDcy1NUHaVr",
               "bhJUNIXWQQ94l8eI2VUf",
-              "b3jcIbyC3BSnaRu8avEk",
-              "xF681s0UeE04gsf0mVsJ",
               "uNsWM1StCcpydKYOjKyu",
-              "BGEU6wFi2uNm6Kje1Yhk",
-              "4kCDY3HJwvO7Zp3con83",
+              "f786b574-daa5-4673-aa0c-cbe3e8534c02",
+              "a4a16c5e-5902-4732-b9b6-2a48efd2e11b",
+              "8e14933d-ecd7-402b-9505-795130d69b35",
+              "8017ae3f-c9b1-4633-87aa-2fada6a89953",
+              "3c0f09d6-e0d7-499c-a594-70c5b7b93048",
+              "dc30854e-e398-4579-9dc8-16f6cb2c19b9",
+              "1259b7e3-cb8a-43df-9446-30971a46b8b0",
+              "e2d08065-b658-466b-ad52-cef8ee21d307",
+              "710feaa3-b550-42f3-b3eb-6f37f2a7cc0a",
+              "cc4276e6-1ebc-429a-8c7d-930993d51abc",
+              "ccfea4bf-b3f4-421e-87ed-dd05dae01431",
+              "c68a8bd0-f99e-4e7f-915d-a097da6d024c",
+              "fb936dd1-66ea-43a0-86bd-18a6203dcda2",
+              "f9a4b3a6-b44b-469f-90e3-c8e19bd30e99",
+              "4f7b1820-6263-4615-87a7-b105768d8f64",
+              "c9611be8-aae9-4a93-bb1c-98dd6b7d52a4",
+              "935a9060-373c-49e4-b078-f4ea6326987a",
+              "fc923f89-1de5-4ddf-b93c-6da2ba63428a",
+              "9cebb910-d4b7-4a4a-85a4-12c79137724c",
+              "38aabb6a-f52b-4fb0-a3d1-988518f4dc06",
+              "498e7f37-7fa3-4e2c-b8e2-8b6e9276f956",
+              "89f4372f-1f73-4b85-8e1e-5d24ed8bc826",
+              "5de076e9-7b28-4442-b279-e7d80d573505",
+              "f4a3a8e4-694c-4c45-9ca0-27caf97901b5",
+              "87286a8d-7ea7-4235-a41a-dd9fa6630feb",
+              "a5136bf9-224c-4d76-b823-52bd5efcffcc",
+              "146485fd-8736-41c7-88a8-7cdd0da34d84",
+              "ca566b43-944e-4474-b494-7d9f0695f307",
+              "8d8ce8c9-44a4-46c4-b10f-9a927b99a853",
+              "66c6b81c-ddb7-4892-bdd5-19b5a7be38e7",
+              "25bf938a-025c-4dd0-906f-8cf8be2e26e9",
+              "1e9b9b3d-d2ce-4cac-9d05-bc36a63fa28e",
+              "fb02b554-7d64-4f90-841e-e57fc88f410c",
+              "bb7e8daa-8b79-47a2-8408-a7a1cc72b53c",
+              "7d7d769c-5ab1-4dd5-bb17-ec8d4b69d03d",
+              "187d1cc5-a771-4ccd-9110-9df8c4e39499",
+              "9626c31c-bec5-4cca-baa8-f8ba9e84c8bc",
+              "db6b0ed5-d5d3-463d-ae85-518a07d3c2b4",
+              "e8e5fffb-252c-436d-b842-8879b84445b6",
               null
             ],
             "description": "The voice ID to be used for the interview agent.",
@@ -768,7 +780,7 @@
             }
           },
           "voice_id": {
-            "default": "11labs-Kate",
+            "default": "db6b0ed5-d5d3-463d-ae85-518a07d3c2b4",
             "enum": [
               "11labs-Anna",
               "openai-Onyx",
@@ -779,13 +791,47 @@
               "11labs-Rahul",
               "IPgYtHTNLjC7Bq7IPHrm",
               "UOIqAnmS11Reiei1Ytkc",
-              "vUmLiNBm6MDcy1NUHaVr",
               "bhJUNIXWQQ94l8eI2VUf",
-              "b3jcIbyC3BSnaRu8avEk",
-              "xF681s0UeE04gsf0mVsJ",
               "uNsWM1StCcpydKYOjKyu",
-              "BGEU6wFi2uNm6Kje1Yhk",
-              "4kCDY3HJwvO7Zp3con83",
+              "f786b574-daa5-4673-aa0c-cbe3e8534c02",
+              "a4a16c5e-5902-4732-b9b6-2a48efd2e11b",
+              "8e14933d-ecd7-402b-9505-795130d69b35",
+              "8017ae3f-c9b1-4633-87aa-2fada6a89953",
+              "3c0f09d6-e0d7-499c-a594-70c5b7b93048",
+              "dc30854e-e398-4579-9dc8-16f6cb2c19b9",
+              "1259b7e3-cb8a-43df-9446-30971a46b8b0",
+              "e2d08065-b658-466b-ad52-cef8ee21d307",
+              "710feaa3-b550-42f3-b3eb-6f37f2a7cc0a",
+              "cc4276e6-1ebc-429a-8c7d-930993d51abc",
+              "ccfea4bf-b3f4-421e-87ed-dd05dae01431",
+              "c68a8bd0-f99e-4e7f-915d-a097da6d024c",
+              "fb936dd1-66ea-43a0-86bd-18a6203dcda2",
+              "f9a4b3a6-b44b-469f-90e3-c8e19bd30e99",
+              "4f7b1820-6263-4615-87a7-b105768d8f64",
+              "c9611be8-aae9-4a93-bb1c-98dd6b7d52a4",
+              "935a9060-373c-49e4-b078-f4ea6326987a",
+              "fc923f89-1de5-4ddf-b93c-6da2ba63428a",
+              "9cebb910-d4b7-4a4a-85a4-12c79137724c",
+              "38aabb6a-f52b-4fb0-a3d1-988518f4dc06",
+              "498e7f37-7fa3-4e2c-b8e2-8b6e9276f956",
+              "89f4372f-1f73-4b85-8e1e-5d24ed8bc826",
+              "5de076e9-7b28-4442-b279-e7d80d573505",
+              "f4a3a8e4-694c-4c45-9ca0-27caf97901b5",
+              "87286a8d-7ea7-4235-a41a-dd9fa6630feb",
+              "a5136bf9-224c-4d76-b823-52bd5efcffcc",
+              "146485fd-8736-41c7-88a8-7cdd0da34d84",
+              "ca566b43-944e-4474-b494-7d9f0695f307",
+              "8d8ce8c9-44a4-46c4-b10f-9a927b99a853",
+              "66c6b81c-ddb7-4892-bdd5-19b5a7be38e7",
+              "25bf938a-025c-4dd0-906f-8cf8be2e26e9",
+              "1e9b9b3d-d2ce-4cac-9d05-bc36a63fa28e",
+              "fb02b554-7d64-4f90-841e-e57fc88f410c",
+              "bb7e8daa-8b79-47a2-8408-a7a1cc72b53c",
+              "7d7d769c-5ab1-4dd5-bb17-ec8d4b69d03d",
+              "187d1cc5-a771-4ccd-9110-9df8c4e39499",
+              "9626c31c-bec5-4cca-baa8-f8ba9e84c8bc",
+              "db6b0ed5-d5d3-463d-ae85-518a07d3c2b4",
+              "e8e5fffb-252c-436d-b842-8879b84445b6",
               null
             ],
             "description": "The voice ID to be used for the interview agent.",
@@ -972,7 +1018,35 @@
     },
     "/v1/teams": {
       "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of teams to return (1-1000). Defaults to the maximum, so omitting it returns every team in the organization.",
+            "schema": {
+              "type": "integer",
+              "default": 1000,
+              "minimum": 1,
+              "maximum": 1000
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset for the list of teams.",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            },
+            "required": false
+          }
+        ],
         "responses": {
+          "422": {
+            "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
           "200": {
             "description": "OK",
             "content": {
@@ -996,7 +1070,7 @@
           }
         ],
         "summary": "Get teams",
-        "description": "Retrieve all teams in the organization."
+        "description": "Retrieve teams in the organization. limit defaults to the maximum page size, so omitting it returns every team."
       }
     },
     "/v1/interviews": {
@@ -1005,10 +1079,12 @@
           {
             "in": "query",
             "name": "limit",
-            "description": "The number of interviews to return.",
+            "description": "The number of interviews to return (1-1000). Use offset to page through larger result sets.",
             "schema": {
               "type": "integer",
-              "default": 20
+              "default": 20,
+              "minimum": 1,
+              "maximum": 1000
             },
             "required": false
           },
@@ -1018,7 +1094,8 @@
             "description": "The offset for the list of interviews.",
             "schema": {
               "type": "integer",
-              "default": 0
+              "default": 0,
+              "minimum": 0
             },
             "required": false
           },
@@ -1063,11 +1140,54 @@
               ]
             },
             "required": false
+          },
+          {
+            "in": "query",
+            "name": "interview_flow_id",
+            "description": "Filter interviews to a single interview flow (role). Use GET /interview-flows to list them.",
+            "schema": {
+              "type": "string",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "ended_after",
+            "description": "Only return interviews that finished at or after this ISO 8601 datetime. Poll for new interviews by passing the ended_at of the most recent one you have already seen. Interviews that have not finished are excluded.",
+            "schema": {
+              "type": "string",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "ended_before",
+            "description": "Only return interviews that finished at or before this ISO 8601 datetime. Interviews that have not finished are excluded.",
+            "schema": {
+              "type": "string",
+              "default": null,
+              "nullable": true
+            },
+            "required": false
           }
         ],
         "responses": {
           "422": {
             "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "413": {
+            "description": "Response over the 6 MB limit; use transcript=none.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "403": {
             "description": "The team_id does not belong to authenticated organization.",
@@ -1102,7 +1222,7 @@
           }
         ],
         "summary": "Get interviews",
-        "description": "Retrieve all interview sessions. If team_id is not provided, returns interviews for all teams in the organization."
+        "description": "Retrieve all interview sessions. If team_id is not provided, returns interviews for all teams in the organization. Narrow the result with interview_flow_id (a single role) and/or ended_after / ended_before (when the interview finished) \u2014 polling with ended_after set to the last ended_at you saw returns only interviews completed since then."
       },
       "post": {
         "responses": {
@@ -1322,10 +1442,12 @@
           {
             "in": "query",
             "name": "limit",
-            "description": "The number of interview flows to return.",
+            "description": "The number of interview flows to return (1-2000). Use offset to page through larger result sets.",
             "schema": {
               "type": "integer",
-              "default": 100
+              "default": 20,
+              "minimum": 1,
+              "maximum": 2000
             },
             "required": false
           },
@@ -1335,7 +1457,8 @@
             "description": "The offset for the list of interview flows.",
             "schema": {
               "type": "integer",
-              "default": 0
+              "default": 0,
+              "minimum": 0
             },
             "required": false
           },
@@ -1349,11 +1472,38 @@
               "nullable": true
             },
             "required": false
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "Filter interview flows by status. Omit to return every status.",
+            "schema": {
+              "default": null,
+              "type": "string",
+              "enum": [
+                "open",
+                "closed",
+                "archived",
+                null
+              ],
+              "nullable": true
+            },
+            "required": false
           }
         ],
         "responses": {
           "422": {
             "$ref": "#/components/responses/UNPROCESSABLE_ENTITY"
+          },
+          "413": {
+            "description": "Response over the 6 MB limit; request a smaller limit.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "403": {
             "description": "The team_id does not belong to authenticated organization.",
@@ -1582,6 +1732,29 @@
         "parameters": [
           {
             "in": "query",
+            "name": "limit",
+            "description": "The number of team members to return (1-1000). Defaults to the maximum, so omitting it returns every team member.",
+            "schema": {
+              "type": "integer",
+              "default": 1000,
+              "minimum": 1,
+              "maximum": 1000
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset for the list of team members.",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            },
+            "required": false
+          },
+          {
+            "in": "query",
             "name": "team_id",
             "description": "Filter team members by team ID. If not provided, returns team members for all teams in the organization.",
             "schema": {
@@ -1629,7 +1802,7 @@
           }
         ],
         "summary": "Get team members",
-        "description": "Retrieve all team members in the organization. Use the returned id as assigned_recruiter_id when creating an interview. If team_id is not provided, returns members for all teams in the organization."
+        "description": "Retrieve team members in the organization. Use the returned id as assigned_recruiter_id when creating an interview. If team_id is not provided, returns members for all teams in the organization. limit defaults to the maximum page size, so omitting it returns every member."
       }
     },
     "/ping": {
@@ -1704,8 +1877,8 @@
         ]
       }
     },
-    "/setup-stripe-checkout-session": {
-      "post": {
+    "/intercom-user-jwt": {
+      "get": {
         "responses": {
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
@@ -1788,6 +1961,18 @@
         ]
       }
     },
+    "/on-interview-flow-user-document-insert": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
     "/on-onboarding-update": {
       "post": {
         "responses": {
@@ -1848,7 +2033,171 @@
         ]
       }
     },
+    "/sentry-alert-triage-webhook": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
     "/kombo-webhook": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/dayforce/Token": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/dayforce/auth/token": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/dayforce/AssessmentList": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/dayforce/assessments": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/dayforce/CandidateAssessmentRegistration": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/dayforce/candidate-assessments/register": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/dayforce/CandidateAssessmentStatus": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/dayforce/candidate-assessments/status": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/dayforce/{unmatched_operation}": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      },
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "unmatched_operation",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/twilio-webhook": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/twilio-message-status": {
       "post": {
         "responses": {
           "default": {
@@ -1884,7 +2233,7 @@
         ]
       }
     },
-    "/save-question": {
+    "/update-interview-flow-status": {
       "post": {
         "responses": {
           "default": {
@@ -1896,7 +2245,19 @@
         ]
       }
     },
-    "/delete-question": {
+    "/update-interview-flow-owned-by": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/save-questions": {
       "post": {
         "responses": {
           "default": {
@@ -1910,6 +2271,66 @@
     },
     "/get-ats-integration-jobs-and-stages-list": {
       "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/get-interview-flow-requisitions": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/link-interview-flow-requisitions": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/unlink-interview-flow-requisition": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/set-interview-flow-requisition-completion-stage": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/get-ats-integrations": {
+      "get": {
         "responses": {
           "default": {
             "$ref": "#/components/responses/DEFAULT_ERROR"
@@ -1945,6 +2366,126 @@
       }
     },
     "/delete-integration": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/create-ats-stage-mapping": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/get-org-email-domain": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/create-org-email-domain": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/check-org-email-domain-dns": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/create-pronunciation": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/update-pronunciation": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/delete-pronunciation": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/update-ats-stage-mapping": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/delete-ats-stage-mapping": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/count-ats-stage-mapping-members": {
       "post": {
         "responses": {
           "default": {
@@ -2064,7 +2605,43 @@
         ]
       }
     },
+    "/preview-summary-template": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/preview-voice": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
     "/extract-interview-flow-from-free-text": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/extract-interview-flow-from-ats-job": {
       "post": {
         "responses": {
           "default": {
@@ -2100,6 +2677,18 @@
         ]
       }
     },
+    "/add-pipeline-members": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
     "/send-candidate-outreach-from-csv": {
       "post": {
         "responses": {
@@ -2124,7 +2713,67 @@
         ]
       }
     },
+    "/send-outreach-to-existing-candidates": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/get-interview-flow-outreach": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/get-outreach-campaign-recipients": {
+      "get": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
     "/save-custom-scores": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/save-resume-custom-scores": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/apply-resume-scoring-template": {
       "post": {
         "responses": {
           "default": {
@@ -2196,7 +2845,151 @@
         ]
       }
     },
+    "/get-ats-role-candidates": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/get-candidate-resume": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/get-candidate-ats-search-url": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/import-candidates-from-resume": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/import-ats-candidates": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/get-imported-ats-resume": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/ensure-ats-resume-for-interview": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/get-candidate-requisition-selection": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/select-candidate-requisition": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
     "/get-connection-details": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/interview-recording-start": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/prepare-interview-recording": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/start-interview-recording": {
       "post": {
         "responses": {
           "default": {
@@ -2292,7 +3085,7 @@
         ]
       }
     },
-    "/update-assigned-recruiter": {
+    "/run-candidate-verification": {
       "post": {
         "responses": {
           "default": {
@@ -2304,7 +3097,43 @@
         ]
       }
     },
-    "/mixpanel-pageviews": {
+    "/cross-submit-candidate": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/archive-candidate-interview-calls": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/archive-candidate-interview-calls-and-send-retry-email": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/update-assigned-recruiter": {
       "post": {
         "responses": {
           "default": {
@@ -2411,6 +3240,30 @@
           "private_routes"
         ]
       },
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/get-outreach-unsubscribe": {
+      "post": {
+        "responses": {
+          "default": {
+            "$ref": "#/components/responses/DEFAULT_ERROR"
+          }
+        },
+        "tags": [
+          "private_routes"
+        ]
+      }
+    },
+    "/unsubscribe-outreach": {
       "post": {
         "responses": {
           "default": {
