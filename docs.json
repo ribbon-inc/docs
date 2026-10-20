@@ -80,7 +80,6 @@
             "group": "Getting Started",
             "pages": [
               "about-ribbon",
-              "knowledge-base/overview",
               "knowledge-base/interview-flows"
             ]
           },
@@ -89,9 +88,7 @@
             "hidden": true,
             "pages": [
               "knowledge-base/custom-scoring",
-              "knowledge-base/integrity-monitoring",
               "knowledge-base/ai-voice-personality",
-              "knowledge-base/candidate-management",
               "knowledge-base/sourcing"
             ]
           },
@@ -99,8 +96,6 @@
             "group": "Administration",
             "hidden": true,
             "pages": [
-              "knowledge-base/team-permissions",
-              "knowledge-base/ats-integrations",
               "knowledge-base/interview-settings"
             ]
           },
@@ -161,5 +156,32 @@
     "light": "/logo/light.png",
     "dark": "/logo/light.png",
     "href": "https://ribbon.ai"
-  }
+  },
+  "redirects": [
+    {
+      "source": "/knowledge-base/overview",
+      "destination": "/about-ribbon",
+      "permanent": true
+    },
+    {
+      "source": "/knowledge-base/candidate-management",
+      "destination": "/knowledge-base/scoring-and-evaluating-candidates/reviewing-interviews",
+      "permanent": true
+    },
+    {
+      "source": "/knowledge-base/integrity-monitoring",
+      "destination": "/knowledge-base/scoring-and-evaluating-candidates/integrity-monitor",
+      "permanent": true
+    },
+    {
+      "source": "/knowledge-base/team-permissions",
+      "destination": "/knowledge-base/settings-and-team-management/team-permissions",
+      "permanent": true
+    },
+    {
+      "source": "/knowledge-base/ats-integrations",
+      "destination": "/knowledge-base/ats-and-integrations/connecting-ats",
+      "permanent": true
+    }
+  ]
 }
