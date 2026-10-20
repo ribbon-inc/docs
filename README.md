@@ -10,6 +10,7 @@ Official documentation for the Ribbon API and platform.
 - `/ribbon-public-api` - API reference (generated from OpenAPI spec)
 - `/knowledge-base` - Platform knowledge base articles
 - `/images` - Screenshots and assets
+- `/support` - Candidate help center, deployed as a separate Mintlify project
 
 ## Local Development
 
@@ -66,3 +67,29 @@ This creates or updates `.mdx` files in `/ribbon-public-api` from the spec.
 ## Deployment
 
 Changes pushed to `main` are automatically deployed via Mintlify.
+
+### Candidate help center
+
+The `support/` directory contains a separate Mintlify site for `support.ribbon.ai`.
+Its `docs.json`, navigation, pages, and logo are independent of the API docs.
+The root `.mintignore` excludes this directory from the `docs.ribbon.ai` build.
+
+Preview and validate the help center from its own directory:
+
+```bash
+cd support
+npx mint dev
+# In another terminal, from support/:
+npx mint validate
+npx mint broken-links
+```
+
+To deploy it, create a separate Mintlify project connected to `ribbon-inc/docs`,
+branch `main`, with the documentation path set to `/support`. After that project
+is connected, pushes to `main` deploy both sites from their configured directories.
+The existing project keeps its documentation path at the repository root.
+
+Check the new site's Mintlify address before connecting `support.ribbon.ai`.
+Follow the domain verification and TLS steps shown in the dashboard before
+switching DNS traffic from Notion. The support configuration includes a redirect
+for the existing Notion audio-help URL.
