@@ -1,0 +1,64 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "appearance": {
+    "default": "light",
+    "strict": true
+  },
+  "name": "Ribbon Help Center",
+  "description": "Prepare for your Ribbon interview and find help with audio, video, connection issues, and next steps.",
+  "colors": {
+    "primary": "#6366F1",
+    "light": "#818CF8",
+    "dark": "#4F46E5"
+  },
+  "favicon": "/logo/light.png",
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/light.png",
+    "href": "https://ribbon.ai"
+  },
+  "navigation": {
+    "pages": [
+      "index",
+      {
+        "group": "Getting started",
+        "pages": [
+          "getting-started/what-to-expect",
+          "getting-started/get-ready",
+          "getting-started/request-an-accommodation"
+        ]
+      },
+      {
+        "group": "During your interview",
+        "pages": [
+          "during-your-interview/expired-interview-links",
+          "during-your-interview/interview-ended-unexpectedly",
+          "during-your-interview/upload-a-document"
+        ]
+      },
+      {
+        "group": "Troubleshooting",
+        "pages": [
+          "troubleshooting/audio-and-sound-check",
+          "troubleshooting/network-and-connection",
+          "troubleshooting/video"
+        ]
+      },
+      {
+        "group": "After your interview",
+        "pages": [
+          "after-your-interview/status-and-next-steps",
+          "after-your-interview/recording-and-privacy"
+        ]
+      }
+    ]
+  },
+  "redirects": [
+    {
+      "source": "/Fix-audio-issue-2b16e54da79f80069fc0ea39eca903b4",
+      "destination": "/troubleshooting/audio-and-sound-check",
+      "permanent": true
+    }
+  ]
+}
