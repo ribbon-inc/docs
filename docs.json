@@ -74,16 +74,19 @@
       },
       {
         "tab": "Knowledge Base",
-        "groups": [
+        "pages": [
+          "welcome-to-ribbon",
           {
             "group": "Getting Started",
             "pages": [
+              "about-ribbon",
               "knowledge-base/overview",
               "knowledge-base/interview-flows"
             ]
           },
           {
             "group": "Features",
+            "hidden": true,
             "pages": [
               "knowledge-base/custom-scoring",
               "knowledge-base/integrity-monitoring",
@@ -94,10 +97,60 @@
           },
           {
             "group": "Administration",
+            "hidden": true,
             "pages": [
               "knowledge-base/team-permissions",
               "knowledge-base/ats-integrations",
               "knowledge-base/interview-settings"
+            ]
+          },
+          {
+            "group": "Managing roles & interviews",
+            "pages": [
+              "knowledge-base/managing-roles-and-interviews/closing-reopening",
+              "knowledge-base/managing-roles-and-interviews/interview-funnel"
+            ]
+          },
+          {
+            "group": "ATS & integrations",
+            "pages": [
+              "knowledge-base/ats-and-integrations/connecting-ats",
+              "knowledge-base/ats-and-integrations/creating-role-from-ats",
+              "knowledge-base/ats-and-integrations/multi-req"
+            ]
+          },
+          {
+            "group": "Candidates & outreach",
+            "pages": [
+              "knowledge-base/candidates-and-outreach/adding-candidates",
+              "knowledge-base/candidates-and-outreach/outreach-automation",
+              "knowledge-base/candidates-and-outreach/sending-outreach-reminders"
+            ]
+          },
+          {
+            "group": "Scoring & evaluating candidates",
+            "pages": [
+              "knowledge-base/scoring-and-evaluating-candidates/integrity-monitor",
+              "knowledge-base/scoring-and-evaluating-candidates/reviewing-interviews",
+              "knowledge-base/scoring-and-evaluating-candidates/sharing-downloading-results"
+            ]
+          },
+          {
+            "group": "Settings & team management",
+            "pages": [
+              "knowledge-base/settings-and-team-management/team-permissions"
+            ]
+          },
+          {
+            "group": "Plans & billing",
+            "pages": [
+              "managing-your-subscription"
+            ]
+          },
+          {
+            "group": "Troubleshooting & support",
+            "pages": [
+              "knowledge-base/troubleshooting-and-support/interview-retries-resets"
             ]
           }
         ]
