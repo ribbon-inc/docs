@@ -165,6 +165,10 @@
   },
   "redirects": [
     {
+      "source": "/",
+      "destination": "/untitled-page-2"
+    },
+    {
       "source": "/knowledge-base/overview",
       "destination": "/about-ribbon",
       "permanent": true
