@@ -147,7 +147,13 @@
               "knowledge-base/troubleshooting-and-support/interview-retries-resets"
             ]
           },
-          "untitled-page"
+          "untitled-page",
+          {
+            "group": "Ribbon Knowledge Base",
+            "pages": [
+              "untitled-page-2"
+            ]
+          }
         ]
       }
     ]
