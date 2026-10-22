@@ -166,7 +166,7 @@
   "redirects": [
     {
       "source": "/",
-      "destination": "/untitled-page-2"
+      "destination": "/welcome"
     },
     {
       "source": "/knowledge-base/overview",
