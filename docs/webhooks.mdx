@@ -186,18 +186,13 @@ Each event describes one application. A candidate usually has a single applicati
     "interviewee_email": "[email protected]",
     "new_status": "accepted",
     "previous_status": "shortlisted",
-    "ats_job_id": "4XqBn2kPwYcLr8sTzGm6aHdE",
     "ats_job_code": "REQ-1042",
     "ats_job_name": "Backend Engineer - Austin"
   }
   ```
 </CodeGroup>
 
-`ats_job_id`, `ats_job_code` and `ats_job_name` name the ATS job the application is on. Use them to tell apart the events for a candidate on several jobs. All three can be `null`, and all three are `null` for an application that is not on an ATS job.
-
-* `ats_job_id`: the job's ID in Kombo, the integration Ribbon uses to connect to your ATS. It is not the job ID inside your ATS.
-* `ats_job_code`: the job's requisition number in your ATS, or `null` if the job has none.
-* `ats_job_name`: the job's title in your ATS.
+`ats_job_code` and `ats_job_name` are the requisition number and the title of the ATS job the application is on, as your ATS records them. Both are `null` for an application that is not on an ATS job. Either can also be `null` on an ATS job, for example when the job has no requisition number.
 
 ### Webhook event ordering
 
