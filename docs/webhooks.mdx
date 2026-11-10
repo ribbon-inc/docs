@@ -171,7 +171,9 @@ We currently support three webhook event types: `interview_processed`, `video_pr
 
 `candidate_status_updated`
 
-This event occurs anytime a candidate’s status changes within the candidate pipeline (for example: shortlisted → accepted). The event includes both the previous status and the new status so you can track transitions precisely.
+This event occurs anytime an application’s status changes within the candidate pipeline (for example: shortlisted → accepted). The event includes both the previous status and the new status so you can track transitions precisely.
+
+Each event describes one application. A candidate usually has a single application on a role. On a role linked to several ATS jobs with [Multi-Req](/knowledge-base/ats-and-integrations/multi-req), a candidate can have an application for each job, each with its own status. You receive one event for each application whose status changes, so moving a candidate on two jobs of the same role sends you two events.
 
 #### Payload example
 
@@ -183,10 +185,19 @@ This event occurs anytime a candidate’s status changes within the candidate pi
     "interview_flow_name": "Backend Engineer",
     "interviewee_email": "[email protected]",
     "new_status": "accepted",
-    "previous_status": "shortlisted"
+    "previous_status": "shortlisted",
+    "ats_job_id": "4XqBn2kPwYcLr8sTzGm6aHdE",
+    "ats_job_code": "REQ-1042",
+    "ats_job_name": "Backend Engineer - Austin"
   }
   ```
 </CodeGroup>
+
+`ats_job_id`, `ats_job_code` and `ats_job_name` name the ATS job the application is on. Use them to tell apart the events for a candidate on several jobs. All three can be `null`, and all three are `null` for an application that is not on an ATS job.
+
+* `ats_job_id`: the job's ID in Kombo, the integration Ribbon uses to connect to your ATS. It is not the job ID inside your ATS.
+* `ats_job_code`: the job's requisition number in your ATS, or `null` if the job has none.
+* `ats_job_name`: the job's title in your ATS.
 
 ### Webhook event ordering
 
